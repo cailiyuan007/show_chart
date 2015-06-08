@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>每日访问数据总量</title>
+<title>每日手机号为空的访问数据总量</title>
 <meta charset="utf-8" http-equiv="refresh" content="10">
 <style>
 
@@ -39,8 +39,8 @@ path{
 </style>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
-<body>
-<h2>每日访问数据总量 </h2>
+<body> 
+<h2>每日手机号为空的访问数据总量 </h2>
 <script>
 /*设置边距和图表大小。 我们设定画布的大小为：width:960,height:500，
 用一个margin对象来存储图表的边距信息，计算出图表的宽度和高度 */
@@ -71,12 +71,12 @@ var x2Axis=d3.svg.axis().scale(x2).orient("top").ticks(7);
 var line = d3.svg.area()
     .interpolate("basis")
     .x(function(d) { return x(d.date1); })
-    .y(function(d) { return y(d["total1"]); });
+    .y(function(d) { return y(d["empty1"]); });
 
 var area = d3.svg.area()
     .interpolate("basis")
     .x(function(d) { return x(d.date1); })
-    .y1(function(d) { return y(d["total1"]); });
+    .y1(function(d) { return y(d["empty1"]); });
     
 /*添加画布
 d3.select(“body”)选择body元素，然后在body里面增加一个子元素”svg”,
@@ -88,21 +88,21 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + 50 + "," + 20 + ")");
 /*Get the data*/
-d3.tsv("total.tsv", function(error, data) {
+d3.tsv("empty.tsv", function(error, data) {
   data.forEach(function(d) {
    // d.date = parseDate(d.date); /*将d.date数据用前面定义的parseDate方法来格式化，将结果返回给d.date*/
     d.date1= parseDate(d.date1);
     d.date2= parseDate(d.date2);
-    d["total1"]= +d["total1"]; /*将d["Total"]转化为数字*/
-    d["total2"]= +d["total2"];
+    d["empty1"]= +d["empty1"]; /*将d["Total"]转化为数字*/
+    d["empty2"]= +d["empty2"];
   });
 /*这段代码是为了让我们导入的数据与图表的大小相适应，range知道是图表范围的大小，
 他是一个尺寸大小。这段代码告诉D3我们要画些东西在x轴上，这些东西是时间/日期的一个实体。*/
   x.domain(d3.extent(data, function(d) { return d.date1;}));
   
   y.domain([
-    d3.min(data, function(d) { return Math.min(d["total1"], d["total2"]); }),
-    d3.max(data, function(d) { return Math.max(d["total1"], d["total2"]); })
+    d3.min(data, function(d) { return Math.min(d["empty1"], d["empty2"]); }),
+    d3.max(data, function(d) { return Math.max(d["empty1"], d["empty2"]); })
   ]);
 //_____________________
   x2.domain(d3.extent(data,function(d) { return d.date2;}));
@@ -121,7 +121,7 @@ d3.tsv("total.tsv", function(error, data) {
   svg.append("path")
       .attr("class", "area above")
       .attr("clip-path", "url(#clip-above)")
-      .attr("d", area.y0(function(d) { return y(d["total2"]); }));
+      .attr("d", area.y0(function(d) { return y(d["empty2"]); }));
 
   svg.append("path")
       .attr("class", "area below")
